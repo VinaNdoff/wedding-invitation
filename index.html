@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thiệp Cưới - Wedding Invitation</title>
+  
+  <!-- Font chữ sang trọng từ Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #942938;      /* Đỏ rượu vang sang trọng */
+      --gold: #c5a059;         /* Vàng gold ánh kim */
+      --gold-light: #f5eedb;   /* Vàng nhạt trang trí */
+      --dark: #2c2825;         /* Chữ đen trầm */
+      --bg: #f8f6f0;           /* Nền màu kem giấy mỹ thuật */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+
+    /* Khung card thiệp chính */
+    .invitation-wrapper {
+      max-width: 520px;
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #e8e3d5;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    /* Viền họa tiết kim loại vàng bên trong */
+    .inner-border {
+      position: absolute;
+      top: 14px;
+      bottom: 14px;
+      left: 14px;
+      right: 14px;
+      border: 1px solid var(--gold);
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0.75;
+    }
+
+    .subtitle-badge {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .names-section {
+      font-family: 'Great Vibes', cursive;
+      font-size: 42px;
+      color: var(--primary);
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .names-section span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      color: var(--gold);
+      display: block;
+      margin: 6px 0;
+      font-weight: 300;
+    }
+
+    /* Khung hiển thị Tên Khách Mời tự động */
+    .guest-container {
+      background: var(--gold-light);
+      border-left: 3px solid var(--gold);
+      border-right: 3px solid var(--gold);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0 28px;
+    }
+
+    .guest-intro {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #7a6e5b;
+      margin-bottom: 6px;
+    }
+
+    .guest-name {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .content-body {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    /* Khối ngày giờ tổ chức */
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .schedule-item {
+      background: #faf8f5;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #eee7db;
+    }
+
+    .schedule-title {
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .schedule-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    /* Thông tin chuyến xe đưa đón */
+    .shuttle-notice {
+      background: #fdf5f5;
+      border: 1px dashed var(--primary);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #4a2c2c;
+    }
+
+    .shuttle-notice strong {
+      color: var(--primary);
+    }
+
+    /* Nút bấm hành động */
+    .action-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #751e2b;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+
+    .btn-outline:hover {
+      background: var(--gold-light);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="invitation-wrapper">
+    <div class="inner-border"></div>
+
+    <div class="subtitle-badge">Wedding Invitation</div>
+    
+    <div class="names-section">
+      Quang Minh
+      <span>&</span>
+      Thu Trang
+    </div>
+
+    <!-- Khung nhận tên tự động từ URL -->
+    <div class="guest-container">
+      <div class="guest-intro">Trân trọng kính mời</div>
+      <div id="guest-name-slot" class="guest-name">Quý Khách</div>
+    </div>
+
+    <div class="content-body">
+      Sự hiện diện của bạn là niềm vinh hạnh to lớn cho gia đình chúng tôi trong ngày vui trọng đại này.
+    </div>
+
+    <div class="schedule-grid">
+      <div class="schedule-item">
+        <div class="schedule-title">Thời gian</div>
+        <div class="schedule-value">11:00 Chủ Nhật<br>18 / 10 / 2026</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-title">Địa điểm</div>
+        <div class="schedule-value">Tư Gia Nhà Trai<br>Khu phố ..., Bắc Ninh</div>
+      </div>
+    </div>
+
+    <!-- Thông báo xe công ty -->
+    <div class="shuttle-notice">
+      🚐 <strong>Chuyến xe đưa đón:</strong> Xe công ty sẽ tập trung và xuất phát lúc <strong>08:30 sáng</strong> tại cổng chính công ty để đón mọi người về quê chung vui.
+    </div>
+
+    <div class="action-group">
+      <!-- Thay link Google Map thực tế vào href bên dưới -->
+      <a href="https://maps.google.com" target="_blank" class="btn btn-outline">Xem vị trí trên Google Maps</a>
+      
+      <!-- Nút xác nhận có đi xe hay không qua Zalo / Tin nhắn -->
+      <a id="rsvp-btn" href="#" target="_blank" class="btn btn-primary">Xác nhận tham dự & Giữ chỗ xe</a>
+    </div>
+  </div>
+
+  <script>
+    // Hàm đọc tham số `name` từ URL
+    function setupGuestDetails() {
+      const urlParams = new URLSearchParams(window.location.search);
+      let guestName = urlParams.get('name') || urlParams.get('u');
+
+      if (guestName) {
+        guestName = decodeURIComponent(guestName).trim();
+        document.getElementById('guest-name-slot').innerText = guestName;
+
+        // Tùy biến luôn nút nhắn tin xác nhận tham dự về Zalo hoặc Phone
+        // Thay số điện thoại của bạn vào đường link: https://zalo.me/09xxxxxxxx
+        const customMessage = encodeURIComponent(`Chào bạn, mình là ${guestName}. Mình xác nhận sẽ tham dự đám cưới và đăng ký 1 chỗ trên xe công ty nhé!`);
+        document.getElementById('rsvp-btn').href = `https://zalo.me?text=${customMessage}`;
+      } else {
+        document.getElementById('rsvp-btn').href = "https://zalo.me";
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', setupGuestDetails);
+  </script>
+
+</body>
+</html>
