@@ -2,21 +2,21 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thiệp Cưới - Wedding Invitation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wedding Invitation</title>
   
-  <!-- Font chữ sang trọng từ Google Fonts -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --primary: #942938;      /* Đỏ rượu vang sang trọng */
-      --gold: #c5a059;         /* Vàng gold ánh kim */
-      --gold-light: #f5eedb;   /* Vàng nhạt trang trí */
-      --dark: #2c2825;         /* Chữ đen trầm */
-      --bg: #f8f6f0;           /* Nền màu kem giấy mỹ thuật */
+      --primary: #872333;
+      --gold: #c5a059;
+      --gold-light: #fbf8f2;
+      --dark: #2c2825;
+      --bg: #f5f2eb;
     }
 
     * {
@@ -33,111 +33,266 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 24px 16px;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    /* Khung card thiệp chính */
-    .invitation-wrapper {
-      max-width: 520px;
+    /* Hiệu ứng cánh hoa rơi nền */
+    .petal {
+      position: fixed;
+      background-color: #ffccd5;
+      border-radius: 150% 0 150% 0;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 1;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        top: -10%;
+        transform: translateX(0) rotate(0deg);
+      }
+      100% {
+        top: 110%;
+        transform: translateX(100px) rotate(360deg);
+      }
+    }
+
+    /* Nút bật/tắt nhạc tròn xoay */
+    .music-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid var(--gold);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 99;
+      transition: transform 0.2s;
+    }
+
+    .music-btn.playing svg {
+      animation: spin 3s linear infinite;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* LỚP 1: BÌ THƯ BAN ĐẦU (CLICK ĐỂ MỞ) */
+    .envelope-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+      transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+      padding: 20px;
+    }
+
+    .envelope-screen.opened {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.1);
+    }
+
+    .envelope-box {
+      width: 320px;
+      height: 220px;
+      background: #e9e3d5;
+      border-radius: 12px;
+      box-shadow: 0 16px 35px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #dcd4c3;
+      cursor: pointer;
+      position: relative;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .envelope-stamp {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid var(--gold);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(135,35,51,0.3);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    /* THIỆP CHÍNH */
+    .card-wrapper {
+      max-width: 480px;
       width: 100%;
       background: #ffffff;
-      border: 1px solid #e8e3d5;
-      border-radius: 18px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e8e2d5;
+      border-radius: 20px;
+      box-shadow: 0 16px 45px rgba(0,0,0,0.08);
       position: relative;
-      overflow: hidden;
-      padding: 40px 24px;
+      padding: 36px 20px;
       text-align: center;
+      margin: 20px auto;
+      z-index: 10;
     }
 
-    /* Viền họa tiết kim loại vàng bên trong */
     .inner-border {
       position: absolute;
-      top: 14px;
-      bottom: 14px;
-      left: 14px;
-      right: 14px;
+      top: 10px;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
       border: 1px solid var(--gold);
-      border-radius: 12px;
+      border-radius: 14px;
       pointer-events: none;
-      opacity: 0.75;
+      opacity: 0.6;
     }
 
     .subtitle-badge {
       font-family: 'Cinzel', serif;
-      font-size: 13px;
+      font-size: 12px;
       letter-spacing: 3px;
       color: var(--gold);
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .names-section {
       font-family: 'Great Vibes', cursive;
       font-size: 42px;
       color: var(--primary);
-      margin-bottom: 24px;
-      line-height: 1.2;
+      line-height: 1.15;
     }
 
     .names-section span {
       font-family: 'Montserrat', sans-serif;
-      font-size: 18px;
+      font-size: 16px;
       color: var(--gold);
       display: block;
-      margin: 6px 0;
+      margin: 4px 0;
       font-weight: 300;
     }
 
-    /* Khung hiển thị Tên Khách Mời tự động */
+    /* KHUNG ẢNH CƯỚI */
+    .photo-frame {
+      width: 85%;
+      height: 260px;
+      margin: 20px auto;
+      border-radius: 120px 120px 16px 16px;
+      overflow: hidden;
+      border: 3px solid var(--gold-light);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      position: relative;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* KHUNG KHÁCH MỜI ĐỘNG */
     .guest-container {
       background: var(--gold-light);
-      border-left: 3px solid var(--gold);
-      border-right: 3px solid var(--gold);
-      border-radius: 8px;
-      padding: 16px;
-      margin: 20px 0 28px;
+      border-top: 1px solid var(--gold);
+      border-bottom: 1px solid var(--gold);
+      padding: 14px;
+      margin: 18px 0;
     }
 
     .guest-intro {
-      font-size: 12px;
-      letter-spacing: 1.5px;
+      font-size: 11px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       color: #7a6e5b;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .guest-name {
       font-family: 'Cinzel', serif;
-      font-size: 22px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      word-break: break-word;
+    }
+
+    .content-body {
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: #555;
+      padding: 0 10px;
+    }
+
+    /* ĐỒNG HỒ ĐẾM NGƯỢC */
+    .countdown-box {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .cd-item {
+      background: #faf8f5;
+      border: 1px solid #eee5d7;
+      border-radius: 8px;
+      padding: 8px 10px;
+      min-width: 58px;
+    }
+
+    .cd-num {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
       font-weight: 700;
       color: var(--primary);
     }
 
-    .content-body {
-      font-size: 14px;
-      line-height: 1.8;
-      color: #555;
-      margin-bottom: 24px;
+    .cd-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      color: #8c8275;
+      letter-spacing: 0.5px;
     }
 
-    /* Khối ngày giờ tổ chức */
+    /* LỊCH VÀ ĐỊA ĐIỂM */
     .schedule-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 24px 0;
+      gap: 10px;
+      margin: 20px 0;
     }
 
     .schedule-item {
       background: #faf8f5;
-      padding: 14px;
+      padding: 12px 8px;
       border-radius: 8px;
       border: 1px solid #eee7db;
     }
 
     .schedule-title {
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 1px;
       color: var(--gold);
       font-weight: 600;
@@ -146,28 +301,26 @@
     }
 
     .schedule-value {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--dark);
+      line-height: 1.4;
     }
 
-    /* Thông tin chuyến xe đưa đón */
+    /* XE ĐƯA ĐÓN */
     .shuttle-notice {
       background: #fdf5f5;
       border: 1px dashed var(--primary);
       border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 24px;
-      font-size: 13px;
-      line-height: 1.6;
+      padding: 12px;
+      margin-bottom: 20px;
+      font-size: 12.5px;
+      line-height: 1.5;
       color: #4a2c2c;
+      text-align: left;
     }
 
-    .shuttle-notice strong {
-      color: var(--primary);
-    }
-
-    /* Nút bấm hành động */
+    /* NÚT BẤM */
     .action-group {
       display: flex;
       flex-direction: column;
@@ -175,42 +328,62 @@
     }
 
     .btn {
-      display: inline-block;
-      padding: 12px 20px;
+      display: block;
+      padding: 12px 16px;
       border-radius: 30px;
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.5px;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border: none;
+      transition: all 0.25s ease;
+      text-align: center;
     }
 
     .btn-primary {
       background: var(--primary);
       color: #fff;
+      box-shadow: 0 4px 14px rgba(135,35,51,0.25);
     }
 
     .btn-primary:hover {
-      background: #751e2b;
-      transform: translateY(-1px);
+      background: #6e1a28;
     }
 
     .btn-outline {
-      background: transparent;
+      background: #fff;
       color: var(--gold);
       border: 1px solid var(--gold);
-    }
-
-    .btn-outline:hover {
-      background: var(--gold-light);
     }
   </style>
 </head>
 <body>
 
-  <div class="invitation-wrapper">
+  <!-- Audio nhạc cưới ngầm (Nhạc piano không bản quyền mẫu) -->
+  <audio id="bg-audio" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-wedding-piano-113333.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- Nút điều khiển nhạc -->
+  <div id="music-control" class="music-btn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c5a059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18V5l12-2v13"></path>
+      <circle cx="6" cy="18" r="3"></circle>
+      <circle cx="18" cy="16" r="3"></circle>
+    </svg>
+  </div>
+
+  <!-- MÀN HÌNH BÌ THƯ CHỜ MỞ -->
+  <div id="envelope-screen" class="envelope-screen">
+    <div class="envelope-box" onclick="openEnvelope()">
+      <div class="envelope-stamp">囍</div>
+      <div style="font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 2px; color: #7a6e5b; margin-bottom: 6px;">WEDDING INVITATION</div>
+      <div id="envelope-guest-name" style="font-weight: 600; color: var(--primary); font-size: 16px;">Kính gửi Quý Khách</div>
+      <div style="font-size: 11px; color: #999; margin-top: 14px;">(Chạm để mở thiệp & phát nhạc)</div>
+    </div>
+  </div>
+
+  <!-- NỘI DUNG THIỆP CHÍNH -->
+  <div class="card-wrapper">
     <div class="inner-border"></div>
 
     <div class="subtitle-badge">Wedding Invitation</div>
@@ -221,7 +394,12 @@
       Thu Trang
     </div>
 
-    <!-- Khung nhận tên tự động từ URL -->
+    <!-- KHUNG ẢNH CƯỚI (Thay link ảnh cưới thực tế vào src bên dưới) -->
+    <div class="photo-frame">
+      <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="Ảnh cưới">
+    </div>
+
+    <!-- KHUNG TỰ ĐỘNG LẤY TÊN KHÁCH MỜI -->
     <div class="guest-container">
       <div class="guest-intro">Trân trọng kính mời</div>
       <div id="guest-name-slot" class="guest-name">Quý Khách</div>
@@ -231,6 +409,15 @@
       Sự hiện diện của bạn là niềm vinh hạnh to lớn cho gia đình chúng tôi trong ngày vui trọng đại này.
     </div>
 
+    <!-- ĐỒNG HỒ ĐẾM NGƯỢC -->
+    <div class="countdown-box">
+      <div class="cd-item"><div id="cd-days" class="cd-num">00</div><div class="cd-label">Ngày</div></div>
+      <div class="cd-item"><div id="cd-hours" class="cd-num">00</div><div class="cd-label">Giờ</div></div>
+      <div class="cd-item"><div id="cd-mins" class="cd-num">00</div><div class="cd-label">Phút</div></div>
+      <div class="cd-item"><div id="cd-secs" class="cd-num">00</div><div class="cd-label">Giây</div></div>
+    </div>
+
+    <!-- LỊCH TRÌNH -->
     <div class="schedule-grid">
       <div class="schedule-item">
         <div class="schedule-title">Thời gian</div>
@@ -242,41 +429,90 @@
       </div>
     </div>
 
-    <!-- Thông báo xe công ty -->
+    <!-- THÔNG TIN XE CÔNG TY -->
     <div class="shuttle-notice">
-      🚐 <strong>Chuyến xe đưa đón:</strong> Xe công ty sẽ tập trung và xuất phát lúc <strong>08:30 sáng</strong> tại cổng chính công ty để đón mọi người về quê chung vui.
+      🚐 <strong>Xe đưa đón:</strong> Xe công ty xuất phát lúc <strong>08:30 sáng</strong> tại cổng chính công ty để đón mọi người về quê chung vui.
     </div>
 
+    <!-- NÚT HÀNH ĐỘNG -->
     <div class="action-group">
-      <!-- Thay link Google Map thực tế vào href bên dưới -->
       <a href="https://maps.google.com" target="_blank" class="btn btn-outline">Xem vị trí trên Google Maps</a>
-      
-      <!-- Nút xác nhận có đi xe hay không qua Zalo / Tin nhắn -->
       <a id="rsvp-btn" href="#" target="_blank" class="btn btn-primary">Xác nhận tham dự & Giữ chỗ xe</a>
     </div>
   </div>
 
   <script>
-    // Hàm đọc tham số `name` từ URL
-    function setupGuestDetails() {
-      const urlParams = new URLSearchParams(window.location.search);
-      let guestName = urlParams.get('name') || urlParams.get('u');
+    // 1. Xử lý lấy tên từ URL (hỗ trợ cả ?name= và ?u=)
+    const urlParams = new URLSearchParams(window.location.search);
+    let guestName = urlParams.get('name') || urlParams.get('u');
 
-      if (guestName) {
-        guestName = decodeURIComponent(guestName).trim();
-        document.getElementById('guest-name-slot').innerText = guestName;
+    if (guestName) {
+      guestName = decodeURIComponent(guestName).trim();
+      document.getElementById('guest-name-slot').innerText = guestName;
+      document.getElementById('envelope-guest-name').innerText = `Kính gửi: ${guestName}`;
 
-        // Tùy biến luôn nút nhắn tin xác nhận tham dự về Zalo hoặc Phone
-        // Thay số điện thoại của bạn vào đường link: https://zalo.me/09xxxxxxxx
-        const customMessage = encodeURIComponent(`Chào bạn, mình là ${guestName}. Mình xác nhận sẽ tham dự đám cưới và đăng ký 1 chỗ trên xe công ty nhé!`);
-        document.getElementById('rsvp-btn').href = `https://zalo.me?text=${customMessage}`;
-      } else {
-        document.getElementById('rsvp-btn').href = "https://zalo.me";
-      }
+      const zaloMsg = encodeURIComponent(`Chào bạn, mình là ${guestName}. Mình xác nhận sẽ về tham dự đám cưới và đăng ký 1 chỗ trên xe công ty nhé!`);
+      // Thay số Zalo của bạn vào đường dẫn dưới
+      document.getElementById('rsvp-btn').href = `https://zalo.me?text=${zaloMsg}`;
+    } else {
+      document.getElementById('rsvp-btn').href = "https://zalo.me";
     }
 
-    window.addEventListener('DOMContentLoaded', setupGuestDetails);
-  </script>
+    // 2. Mở phong bì & kích hoạt phát nhạc
+    const audio = document.getElementById('bg-audio');
+    const musicBtn = document.getElementById('music-control');
+    let isPlaying = false;
 
+    function openEnvelope() {
+      document.getElementById('envelope-screen').classList.add('opened');
+      audio.play().then(() => {
+        isPlaying = true;
+        musicBtn.classList.add('playing');
+      }).catch(err => {
+        console.log("Autoplay bị chặn, người dùng có thể bấm nút nhạc:", err);
+      });
+      createFallingPetals();
+    }
+
+    musicBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        audio.pause();
+        musicBtn.classList.remove('playing');
+      } else {
+        audio.play();
+        musicBtn.classList.add('playing');
+      }
+      isPlaying = !isPlaying;
+    });
+
+    // 3. Đồng hồ đếm ngược tới ngày cưới (Cài đặt ngày cưới ở đây)
+    const weddingDate = new Date("2026-10-18T11:00:00").getTime();
+
+    setInterval(function() {
+      const now = new Date().getTime();
+      const distance = weddingDate - now;
+
+      if (distance > 0) {
+        document.getElementById("cd-days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+        document.getElementById("cd-hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById("cd-mins").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById("cd-secs").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+      }
+    }, 1000);
+
+    // 4. Hiệu ứng cánh hoa rơi nhẹ nhàng
+    function createFallingPetals() {
+      for (let i = 0; i < 18; i++) {
+        const petal = document.createElement('div');
+        petal.classList.add('petal');
+        petal.style.left = Math.random() * 100 + 'vw';
+        petal.style.width = Math.random() * 12 + 8 + 'px';
+        petal.style.height = Math.random() * 12 + 8 + 'px';
+        petal.style.animationDuration = Math.random() * 3 + 4 + 's';
+        petal.style.animationDelay = Math.random() * 5 + 's';
+        document.body.appendChild(petal);
+      }
+    }
+  </script>
 </body>
 </html>
